@@ -1,10 +1,7 @@
 from fastapi import FastAPI
 
-from .config import config
+from .routes import routes
 
 app = FastAPI()
 
-
-@app.get("/")
-def check():
-    return {"app": config["app"]["name"], "version": config["app"]["version"]}
+routes(app)

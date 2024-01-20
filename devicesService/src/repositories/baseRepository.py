@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 
 from ..db import get_session
 
@@ -20,12 +20,17 @@ class BaseRepository(ABC):
         self.session.commit()
         return model
 
-    def update(self, model):
-        self.session.commit()
-        return model
+    def count(self):
+        q = select(func.count()).select_from(self.model)
+        return self.session.execute(q).scalar()
 
     def get_all(self):
         q = select(self.model).where(self.model.id > 0)
+        return self.session.scalars(q).all()
+
+    def paginate(self, page: int, size: int = 10):
+        offset = (page - 1) * size
+        q = select(self.model).offset(offset).limit(size)
         return self.session.scalars(q).all()
 
     def get_by_id(self, id: int):
@@ -38,6 +43,8 @@ class BaseRepository(ABC):
 
     def update(self, id: int, data):
         model = self.get_by_id(id)
+        if model is None:
+            return None
         for key, value in data.items():
             setattr(model, key, value)
         self.save()
@@ -45,5 +52,8 @@ class BaseRepository(ABC):
 
     def delete(self, id: int):
         model = self.get_by_id(id)
+        if model is None:
+            return None
         self.session.delete(model)
         self.save()
+        return model
