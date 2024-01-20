@@ -1,7 +1,8 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
-from src.models.base import Base
-from src.models.mixins import TimestampMixin
+
+from .base import Base
+from .mixins import TimestampMixin
 
 
 class Device(TimestampMixin, Base):

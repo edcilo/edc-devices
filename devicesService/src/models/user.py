@@ -1,7 +1,9 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
-from src.models.base import Base
-from src.models.mixins import TimestampMixin
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from .base import Base
+from .mixins import TimestampMixin
 
 
 class User(TimestampMixin, Base):
@@ -13,3 +15,9 @@ class User(TimestampMixin, Base):
 
     def __repr__(self):
         return f"<User(id={self.id}, email={self.email}, password={self.password})>"
+
+    def set_password(self, password: str) -> None:
+        self.password = generate_password_hash(password)
+
+    def verify_password(self, password: str) -> bool:
+        return check_password_hash(self.password, password)

@@ -7,6 +7,7 @@ DOCKEREXEC=$(DOCKERCMD) exec
 
 up:
 	@echo "🚀 Starting services..."
+	$(DOCKERCMD) build
 	$(DOCKERUP)
 	@echo "🏁 Services availables"
 	$(DOCKERPS)

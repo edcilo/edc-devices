@@ -1,5 +1,7 @@
 from sqlalchemy import create_engine
-from src.config import config
+from sqlalchemy.orm import Session
+
+from ..config import config
 
 
 def get_dns() -> str:
@@ -37,19 +39,27 @@ def db_migrate():
     Base.metadata.create_all(engine)
 
 
+def get_session() -> Session:
+    """
+    Returns the database session
+
+    :return: Database session
+    """
+    engine = get_engine()
+    return Session(engine)
+
+
 def db_seed():
     """
     Seeds the database
     """
-    from sqlalchemy.orm import Session
     from src.models.device import Device
     from src.models.user import User
 
-    engine = get_engine()
+    session = get_session()
 
-    session = Session(engine)
-
-    user = User(email="admin@edcilo.com", password="secret")
+    user = User(email="admin@edcilo.com")
+    user.set_password("secret")
     session.add(user)
 
     devices = [

@@ -11,4 +11,7 @@ WORKDIR /app
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
-CMD ["tail", "-f", "/dev/null"]
+COPY . .
+RUN pip install -e .
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

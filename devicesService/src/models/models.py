@@ -1,3 +1,3 @@
-from src.models.base import Base
-from src.models.device import Device
-from src.models.user import User
+from .base import Base
+from .device import Device
+from .user import User

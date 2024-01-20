@@ -1,8 +1,4 @@
-# from src.db import db_migrate, db_seed
-
-# db_migrate()
-# db_seed()
-from src.cmd import app
+from src import app, cli
 
 if __name__ == "__main__":
-    app()
+    cli()
