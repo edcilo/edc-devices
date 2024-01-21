@@ -7,6 +7,12 @@ devicesRouter = APIRouter()
 controller = DeviceController()
 
 
+@devicesRouter.get("/devices/stats")
+def stats(authorization: str = Header(None)):
+    auth(authorization)
+    return controller.stats()
+
+
 @devicesRouter.get("/devices")
 def paginate(authorization: str = Header(None), page: int = 1, size: int = 10):
     auth(authorization)

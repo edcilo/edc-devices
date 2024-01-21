@@ -1,0 +1,22 @@
+meta {
+  name: create_device
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8000/api/v1/devices
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcwNTgyMTM0Nn0.szZBevhDpxcUKPhGXASYKHkC-rO7y3ol27E0SsYYW_c
+}
+
+body:json {
+  {
+    "name": "Test-00",
+    "ip": "127.0.0.1"
+  }
+}

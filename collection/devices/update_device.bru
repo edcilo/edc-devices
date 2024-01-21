@@ -1,0 +1,22 @@
+meta {
+  name: update_device
+  type: http
+  seq: 7
+}
+
+put {
+  url: http://localhost:8000/api/v1/devices/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcwNTgyMTM0Nn0.szZBevhDpxcUKPhGXASYKHkC-rO7y3ol27E0SsYYW_c
+}
+
+body:json {
+  {
+    "name": "Test-01",
+    "ip": "0.0.0.0"
+  }
+}

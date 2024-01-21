@@ -9,6 +9,13 @@ class DeviceController:
     def __init__(self):
         self.repo = DeviceRepository()
 
+    def stats(self):
+        return {
+            "total": self.repo.count(),
+            "online": self.repo.count_by_status(1),
+            "offline": self.repo.count_by_status(0),
+        }
+
     def paginate(self, page, size):
         data = self.repo.paginate(page, size)
         total = self.repo.count()
