@@ -5,6 +5,7 @@ config = {
         "name": os.getenv("APP_NAME", "app"),
         "env": os.getenv("APP_ENV", "development"),
         "version": os.getenv("APP_VERSION", "1.0.0"),
+        "secret": os.getenv("APP_SECRET", "secret"),
     },
     "db": {
         "host": os.getenv("DB_HOST", "localhost"),

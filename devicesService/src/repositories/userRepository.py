@@ -1,3 +1,5 @@
+from sqlalchemy import select
+
 from ..models.user import User
 from .baseRepository import BaseRepository
 
@@ -5,6 +7,10 @@ from .baseRepository import BaseRepository
 class UserRepository(BaseRepository):
     def getModel(self):
         return User
+
+    def get_by_email(self, email: str):
+        q = select(self.model).where(self.model.email == email)
+        return self.session.scalars(q).first()
 
     def create(self, data):
         password = data["password"]
