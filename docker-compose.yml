@@ -1,6 +1,15 @@
 version: '3.8'
 
 services:
+  front:
+    build:
+      context: ./devicesfront
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - devicesNet
+
   devices:
     build:
       context: ./devicesService
