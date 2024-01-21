@@ -1,0 +1,15 @@
+meta {
+  name: ping_by_id
+  type: http
+  seq: 10
+}
+
+post {
+  url: http://localhost:8000/api/v1/devices/1/ping
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcwNTgyMTM0Nn0.szZBevhDpxcUKPhGXASYKHkC-rO7y3ol27E0SsYYW_c
+}

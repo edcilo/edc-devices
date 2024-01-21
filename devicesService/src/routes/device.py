@@ -31,6 +31,12 @@ def get(id: int, authorization: str = Header(None)):
     return controller.find(id)
 
 
+@devicesRouter.post("/devices/{id}/ping")
+def ping(id: int, authorization: str = Header(None)):
+    auth(authorization)
+    return controller.ping(id)
+
+
 @devicesRouter.put("/devices/{id}")
 def update(id: int, device: NewDeviceSchema, authorization: str = Header(None)):
     auth(authorization)

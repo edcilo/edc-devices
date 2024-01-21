@@ -44,6 +44,15 @@ class DeviceController:
             raise HTTPException(status_code=404, detail="Device not found")
         return DeviceSchema.from_orm(device)
 
+    def ping(self, id: int):
+        device = self.repo.get_by_id(id)
+        if device is None:
+            raise HTTPException(status_code=404, detail="Device not found")
+        device.status = 1 if ping(device.ip) else 0
+        device.updated_at = datetime.now()
+        self.repo.save()
+        return DeviceSchema.from_orm(device)
+
     def update(self, id: int, device: NewDeviceSchema):
         device = self.repo.update(id, device.dict())
         if device is None:

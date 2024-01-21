@@ -8,6 +8,7 @@ class DeviceSchema(BaseModel):
     id: Optional[int]
     name: str
     ip: str
+    status: int
     created_at: datetime
     updated_at: datetime
 
