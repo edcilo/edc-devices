@@ -10,4 +10,7 @@ def jwt_encode(payload):
 
 
 def jwt_verify(token):
-    return jwt.decode(token, secret, algorithms=["HS256"])
+    try:
+        return jwt.decode(token, secret, algorithms=["HS256"])
+    except:
+        return False
