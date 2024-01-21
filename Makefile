@@ -6,6 +6,7 @@ DOCKERPS=$(DOCKERCMD) ps
 DOCKEREXEC=$(DOCKERCMD) exec
 
 up:
+	chmod +x ./devicesService/entrypoint.sh
 	@echo "🚀 Starting services..."
 	$(DOCKERCMD) build
 	$(DOCKERUP)

@@ -2,6 +2,8 @@ from fastapi import HTTPException
 from ..repositories.deviceRepository import DeviceRepository
 from ..schemas.deviceSchema import DeviceSchema, NewDeviceSchema
 
+from ..utils.network import ping
+
 
 class DeviceController:
     def __init__(self):
@@ -43,3 +45,9 @@ class DeviceController:
         device = self.repo.delete(id)
         if device is None:
             raise HTTPException(status_code=404, detail="Device not found")
+
+    def monitor(self):
+        devices = self.repo.get_all()
+        for device in devices:
+            device.status = 1 if ping(device.ip) else 0
+        self.repo.save()

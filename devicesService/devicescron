@@ -1,0 +1,2 @@
+# min   hour    day     month   weekday command
+*       *       *       *       *       python /app/main.py monitor >> /var/log/cron.log 2>&1

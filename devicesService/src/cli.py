@@ -1,6 +1,7 @@
 import typer
 
 from .db import db_migrate, db_seed
+from .controllers.deviceController import DeviceController
 
 cli = typer.Typer()
 
@@ -15,3 +16,10 @@ def dbmigrate():
 def dbseed():
     typer.echo("Seeding database...")
     db_seed()
+
+
+@cli.command(name="monitor", help="Monitors the devices")
+def monitor():
+    typer.echo("Monitoring devices...")
+    controller = DeviceController()
+    controller.monitor()

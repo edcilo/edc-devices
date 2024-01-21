@@ -1,4 +1,4 @@
-FROM python:3.9-alpine
+FROM python:3.10-alpine
 
 RUN apk update \
     && apk add --no-cache \
@@ -11,7 +11,14 @@ WORKDIR /app
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
+RUN touch /var/log/cron.log
+COPY ./devicescron /etc/cron.d/devicescron
+RUN chmod 0644 /etc/cron.d/devicescron
+RUN /usr/bin/crontab /etc/cron.d/devicescron
+
 COPY . .
 RUN pip install -e .
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+RUN chmod +x ./entrypoint.sh
+
+CMD ["./entrypoint.sh"]
