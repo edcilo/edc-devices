@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import HTTPException
 from ..repositories.deviceRepository import DeviceRepository
 from ..schemas.deviceSchema import DeviceSchema, NewDeviceSchema
@@ -57,4 +59,5 @@ class DeviceController:
         devices = self.repo.get_all()
         for device in devices:
             device.status = 1 if ping(device.ip) else 0
+            device.updated_at = datetime.now()
         self.repo.save()

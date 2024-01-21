@@ -25,7 +25,7 @@ class BaseRepository(ABC):
         return self.session.execute(q).scalar()
 
     def get_all(self):
-        q = select(self.model).where(self.model.id > 0)
+        q = select(self.model).where(self.model.id > 0).order_by(self.model.id)
         return self.session.scalars(q).all()
 
     def paginate(self, page: int, size: int = 10):
