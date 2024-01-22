@@ -9,6 +9,7 @@ type DeviceListProps = {
     onAddDevice: () => void;
     onEditDevice: (device: Device) => void;
     onDeleteDevice: (device: Device) => void;
+    onTest: (device: Device, online: boolean) => void;
 }
 
 export type Device = {
@@ -40,9 +41,26 @@ async function getDevices(token: string, page: number = 1, size: number = 10) {
     return await response.json()
 }
 
-export function DevicesList({ onAddDevice, onEditDevice, onDeleteDevice }: DeviceListProps) {
+async function testDevice(id: number, token: string) {
+    const response = await fetch(`${config.api.url}/api/v1/devices/${id}/ping`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+
+    if (response.status === 200) {
+        const data = await response.json()
+        return data.status === 1;
+    }
+
+    return false;
+}
+
+export function DevicesList({ onAddDevice, onEditDevice, onDeleteDevice, onTest }: DeviceListProps) {
     const [page, setPage] = useState<number>(1)
     const [loading, setLoading] = useState<boolean>(true)
+    const [testing, setTesting] = useState<boolean>(false)
     const [data, setData] = useState<Device[]>([])
     const [meta, setMeta] = useState<Meta>({ total: 0, pages: 0 })
     const [cookies] = useCookies(["token"])
@@ -59,6 +77,15 @@ export function DevicesList({ onAddDevice, onEditDevice, onDeleteDevice }: Devic
     useEffect(() => {
         updateList();
     }, [page])
+
+    async function testHandler(device: Device) {
+        setTesting(true);
+        setLoading(true);
+        const online = await testDevice(device.id, cookies.token)
+        setTesting(false);
+        setLoading(false);
+        onTest(device, online);
+    }
 
     return (
         <Card shadow="sm" padding="lg" radius="md">
@@ -87,7 +114,7 @@ export function DevicesList({ onAddDevice, onEditDevice, onDeleteDevice }: Devic
                 <Table.Tbody>
                     { loading && (
                         <Table.Tr>
-                            <Table.Td colSpan={5} align="center">
+                            <Table.Td colSpan={6} align="center">
                                 <Loader type="dots" />
                             </Table.Td>
                         </Table.Tr>
@@ -111,10 +138,13 @@ export function DevicesList({ onAddDevice, onEditDevice, onDeleteDevice }: Devic
                                 <Table.Td>{parseDate(device.updated_at)}</Table.Td>
                                 <Table.Td align="center">
                                     <Flex gap="xs">
-                                        <Button variant="light" color="yellow" size="xs" onClick={() => onEditDevice(device)}>
+                                        <Button variant="light" color="grape" size="xs" onClick={() => testHandler(device)} disabled={testing}>
+                                            ▶
+                                        </Button>
+                                        <Button variant="light" color="yellow" size="xs" onClick={() => onEditDevice(device)} disabled={testing}>
                                             ✏️
                                         </Button>
-                                        <Button variant="light" color="red" size="xs" onClick={() => onDeleteDevice(device)}>
+                                        <Button variant="light" color="red" size="xs" onClick={() => onDeleteDevice(device)} disabled={testing}>
                                             🗑️
                                         </Button>
                                     </Flex>
